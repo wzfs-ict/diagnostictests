@@ -96,7 +96,20 @@
         .submit-btn:hover {
             background-color: #2ecc71;
         }
+        .submit-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .status-msg {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+            min-height: 20px;
+        }
+        .status-msg.success { color: #27ae60; }
+        .status-msg.error { color: #c0392b; }
         @media print {
+            .status-msg { display: none; }
             body {
                 background-color: #fff;
             }
@@ -246,13 +259,66 @@
         </table>
     </div>
 
-    <button class="submit-btn" onclick="submitForm()">Save as PDF / Submit</button>
+    <button class="submit-btn" id="submitBtn" onclick="submitForm()">Submit & Save as PDF</button>
+    <div class="status-msg" id="statusMsg"></div>
 </div>
 
 <script>
-    function submitForm() {
+    // Paste the "HTTP POST URL" from your Power Automate flow's trigger here.
+    // Leave it as-is (starting with "PASTE_") to skip emailing and just print/save as before.
+    const FLOW_URL = "PASTE_YOUR_POWER_AUTOMATE_URL_HERE";
+
+    function collectAnswers() {
+        const boxes = document.querySelectorAll('.answer-box');
+        const answers = [];
+        boxes.forEach(box => {
+            answers.push({
+                question: box.title,
+                answer: (box.value || '').trim().toUpperCase()
+            });
+        });
+        return answers;
+    }
+
+    async function submitForm() {
+        const studentName = document.getElementById('studentName').value.trim() || 'Student';
+        const studentGrade = document.getElementById('studentGrade').value.trim() || '';
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('statusMsg');
+
+        const payload = {
+            test: 'A2 Diagnostic Test - Aug 2026',
+            studentName: studentName,
+            studentGrade: studentGrade,
+            submittedAt: new Date().toISOString(),
+            answers: collectAnswers()
+        };
+
+        if (FLOW_URL && FLOW_URL.startsWith('http')) {
+            submitBtn.disabled = true;
+            statusMsg.textContent = 'Sending to teacher...';
+            statusMsg.className = 'status-msg';
+            try {
+                await fetch(FLOW_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Power Automate HTTP triggers don't send CORS headers by default
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                // mode:'no-cors' hides the real response, so we can't confirm delivery here.
+                // Absence of a thrown error means the request left the browser successfully.
+                statusMsg.textContent = 'Sent to teacher ✓';
+                statusMsg.className = 'status-msg success';
+            } catch (e) {
+                console.error('Could not send results automatically:', e);
+                statusMsg.textContent = 'Could not send automatically — please also save/print this page and hand it in.';
+                statusMsg.className = 'status-msg error';
+            } finally {
+                submitBtn.disabled = false;
+            }
+        }
+
         // Change document title for cleaner PDF saving
-        const studentName = document.getElementById('studentName').value || 'Student';
         document.title = `A2_Diagnostic_Test_${studentName}`;
         window.print();
         // Reset title after a brief delay
