@@ -94,6 +94,18 @@
             outline: none;
             box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
         }
+        .answer-box.correct {
+            border-color: #27ae60;
+            background-color: #eafaf1;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .answer-box.incorrect {
+            border-color: #c0392b;
+            background-color: #fdecea;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
         .submit-btn {
             display: block;
             width: 100%;
@@ -154,7 +166,7 @@
         </div>
         <div class="info-group">
             <label for="studentScore">Score:</label>
-            <input type="text" id="studentScore" placeholder="Teacher Use" disabled style="background-color: #eee;">
+            <input type="text" id="studentScore" placeholder="Auto-marked on submit" disabled style="background-color: #eee;">
         </div>
     </div>
 
@@ -271,6 +283,7 @@
     <input type="hidden" name="Test" value="B1 Diagnostic Test - Aug 2026">
     <input type="hidden" name="Student Name" id="emailStudentName">
     <input type="hidden" name="Grade" id="emailGrade">
+    <input type="hidden" name="Score" id="emailScore">
     <input type="hidden" name="Submitted At" id="emailSubmittedAt">
     <input type="hidden" name="Answers" id="emailAnswers">
     <input type="file" name="attachment" id="emailAttachment">
