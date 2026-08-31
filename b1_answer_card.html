@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Answer Card 2026 Aug Diagnostic Test B1</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -49,6 +50,9 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
+        }
+        table, tr {
+            page-break-inside: avoid;
         }
         th, td {
             border: 1px solid #ddd;
@@ -255,12 +259,24 @@
     <div class="status-msg" id="statusMsg"></div>
 </div>
 
-<script>
-    // Emails results via formsubmit.co (no backend needed). The first submission
-    // to each address requires a one-time confirmation click in that inbox.
-    const RECIPIENT_EMAIL = 'mparker@zhongshischool.org';
-    const CC_EMAIL = 'kjoshua@zhongshischool.org';
+<!-- Hidden iframe + real (non-AJAX) form: formsubmit.co only accepts file
+     attachments on a standard multipart POST, not its AJAX endpoint. Targeting
+     a hidden iframe lets that POST happen without navigating the page away. -->
+<iframe name="emailFrame" id="emailFrame" style="display:none"></iframe>
+<form id="emailForm" action="https://formsubmit.co/mparker@zhongshischool.org" method="POST"
+      enctype="multipart/form-data" target="emailFrame" style="display:none">
+    <input type="hidden" name="_cc" value="kjoshua@zhongshischool.org">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_subject" id="emailSubject">
+    <input type="hidden" name="Test" value="B1 Diagnostic Test - Aug 2026">
+    <input type="hidden" name="Student Name" id="emailStudentName">
+    <input type="hidden" name="Grade" id="emailGrade">
+    <input type="hidden" name="Submitted At" id="emailSubmittedAt">
+    <input type="hidden" name="Answers" id="emailAnswers">
+    <input type="file" name="attachment" id="emailAttachment">
+</form>
 
+<script>
     function collectAnswers() {
         const boxes = document.querySelectorAll('.answer-box');
         const answers = [];
@@ -278,38 +294,58 @@
         const studentGrade = document.getElementById('studentGrade').value.trim() || '';
         const submitBtn = document.getElementById('submitBtn');
         const statusMsg = document.getElementById('statusMsg');
+        const pdfFilename = `B1_Diagnostic_Test_${studentName}.pdf`;
 
-        const answersText = collectAnswers()
+        submitBtn.disabled = true;
+        statusMsg.textContent = 'Preparing PDF...';
+        statusMsg.className = 'status-msg';
+
+        // Bake current input values into the DOM so html2canvas renders what the student typed.
+        document.querySelectorAll('.container input').forEach(inp => inp.setAttribute('value', inp.value));
+
+        let pdfFile = null;
+        try {
+            const pdfBlob = await html2pdf().set({
+                margin: 10,
+                filename: pdfFilename,
+                image: { type: 'jpeg', quality: 0.85 },
+                html2canvas: { scale: 1.5 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['avoid-all', 'css'] }
+            }).from(document.querySelector('.container')).outputPdf('blob');
+            pdfFile = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
+        } catch (e) {
+            console.error('Could not generate PDF for email attachment:', e);
+        }
+
+        document.getElementById('emailSubject').value = `B1 Diagnostic Test submission - ${studentName}`;
+        document.getElementById('emailStudentName').value = studentName;
+        document.getElementById('emailGrade').value = studentGrade;
+        document.getElementById('emailSubmittedAt').value = new Date().toLocaleString();
+        document.getElementById('emailAnswers').value = collectAnswers()
             .map(a => `${a.question}: ${a.answer || '(blank)'}`)
             .join('\n');
 
-        const formData = new FormData();
-        formData.append('_subject', `B1 Diagnostic Test submission - ${studentName}`);
-        formData.append('_cc', CC_EMAIL);
-        formData.append('_captcha', 'false');
-        formData.append('Test', 'B1 Diagnostic Test - Aug 2026');
-        formData.append('Student Name', studentName);
-        formData.append('Grade', studentGrade);
-        formData.append('Submitted At', new Date().toLocaleString());
-        formData.append('Answers', answersText);
+        const attachmentInput = document.getElementById('emailAttachment');
+        if (pdfFile) {
+            const dt = new DataTransfer();
+            dt.items.add(pdfFile);
+            attachmentInput.files = dt.files;
+        }
 
-        submitBtn.disabled = true;
         statusMsg.textContent = 'Sending to teacher...';
-        statusMsg.className = 'status-msg';
-        try {
-            const res = await fetch(`https://formsubmit.co/ajax/${RECIPIENT_EMAIL}`, {
-                method: 'POST',
-                headers: { 'Accept': 'application/json' },
-                body: formData
-            });
-            if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        const emailFrame = document.getElementById('emailFrame');
+        emailFrame.addEventListener('load', () => {
             statusMsg.textContent = 'Sent to teacher ✓';
             statusMsg.className = 'status-msg success';
+            submitBtn.disabled = false;
+        }, { once: true });
+        try {
+            document.getElementById('emailForm').submit();
         } catch (e) {
             console.error('Could not send results automatically:', e);
             statusMsg.textContent = 'Could not send automatically — please also save/print this page and hand it in.';
             statusMsg.className = 'status-msg error';
-        } finally {
             submitBtn.disabled = false;
         }
 
