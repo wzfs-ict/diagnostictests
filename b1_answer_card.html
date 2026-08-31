@@ -75,6 +75,16 @@
             box-sizing: border-box;
             text-transform: uppercase;
         }
+        .answer-box.word {
+            width: 130px;
+            text-align: left;
+            padding-left: 10px;
+            text-transform: none;
+        }
+        td {
+            flex-wrap: wrap;
+            row-gap: 8px;
+        }
         .answer-box:focus {
             border-color: #3498db;
             outline: none;
@@ -184,58 +194,58 @@
             <tr>
                 <th>Five Notices (1-5)</th>
                 <td>
-                    <input type="text" class="answer-box" maxlength="1" title="Notice 1">
-                    <input type="text" class="answer-box" maxlength="1" title="Notice 2">
-                    <input type="text" class="answer-box" maxlength="1" title="Notice 3">
-                    <input type="text" class="answer-box" maxlength="1" title="Notice 4">
-                    <input type="text" class="answer-box" maxlength="1" title="Notice 5">
+                    <input type="text" class="answer-box word" title="Notice 1">
+                    <input type="text" class="answer-box word" title="Notice 2">
+                    <input type="text" class="answer-box word" title="Notice 3">
+                    <input type="text" class="answer-box word" title="Notice 4">
+                    <input type="text" class="answer-box word" title="Notice 5">
                 </td>
             </tr>
             <tr>
                 <th>The Great White Shark (1-6)</th>
                 <td>
-                    <input type="text" class="answer-box" maxlength="1" title="Shark 1">
-                    <input type="text" class="answer-box" maxlength="1" title="Shark 2">
-                    <input type="text" class="answer-box" maxlength="1" title="Shark 3">
-                    <input type="text" class="answer-box" maxlength="1" title="Shark 4">
-                    <input type="text" class="answer-box" maxlength="1" title="Shark 5">
-                    <input type="text" class="answer-box" maxlength="1" title="Shark 6">
+                    <input type="text" class="answer-box word" title="Shark 1">
+                    <input type="text" class="answer-box word" title="Shark 2">
+                    <input type="text" class="answer-box word" title="Shark 3">
+                    <input type="text" class="answer-box word" title="Shark 4">
+                    <input type="text" class="answer-box word" title="Shark 5">
+                    <input type="text" class="answer-box word" title="Shark 6">
                 </td>
             </tr>
             <tr>
                 <th>The Tower of London (1-6)</th>
                 <td>
-                    <input type="text" class="answer-box" maxlength="1" title="Tower 1">
-                    <input type="text" class="answer-box" maxlength="1" title="Tower 2">
-                    <input type="text" class="answer-box" maxlength="1" title="Tower 3">
-                    <input type="text" class="answer-box" maxlength="1" title="Tower 4">
-                    <input type="text" class="answer-box" maxlength="1" title="Tower 5">
-                    <input type="text" class="answer-box" maxlength="1" title="Tower 6">
+                    <input type="text" class="answer-box word" title="Tower 1">
+                    <input type="text" class="answer-box word" title="Tower 2">
+                    <input type="text" class="answer-box word" title="Tower 3">
+                    <input type="text" class="answer-box word" title="Tower 4">
+                    <input type="text" class="answer-box word" title="Tower 5">
+                    <input type="text" class="answer-box word" title="Tower 6">
                 </td>
             </tr>
             <tr>
                 <th>Georgina Johnson (1-5)</th>
                 <td>
-                    <input type="text" class="answer-box" maxlength="1" title="Georgina 1">
-                    <input type="text" class="answer-box" maxlength="1" title="Georgina 2">
-                    <input type="text" class="answer-box" maxlength="1" title="Georgina 3">
-                    <input type="text" class="answer-box" maxlength="1" title="Georgina 4">
-                    <input type="text" class="answer-box" maxlength="1" title="Georgina 5">
+                    <input type="text" class="answer-box word" title="Georgina 1">
+                    <input type="text" class="answer-box word" title="Georgina 2">
+                    <input type="text" class="answer-box word" title="Georgina 3">
+                    <input type="text" class="answer-box word" title="Georgina 4">
+                    <input type="text" class="answer-box word" title="Georgina 5">
                 </td>
             </tr>
             <tr>
                 <th>Four Statements (1-10)</th>
                 <td>
-                    <input type="text" class="answer-box" maxlength="1" title="Statement 1">
-                    <input type="text" class="answer-box" maxlength="1" title="Statement 2">
-                    <input type="text" class="answer-box" maxlength="1" title="Statement 3">
-                    <input type="text" class="answer-box" maxlength="1" title="Statement 4">
-                    <input type="text" class="answer-box" maxlength="1" title="Statement 5">
-                    <input type="text" class="answer-box" maxlength="1" title="Statement 6">
-                    <input type="text" class="answer-box" maxlength="1" title="Statement 7">
-                    <input type="text" class="answer-box" maxlength="1" title="Statement 8">
-                    <input type="text" class="answer-box" maxlength="1" title="Statement 9">
-                    <input type="text" class="answer-box" maxlength="1" title="Statement 10">
+                    <input type="text" class="answer-box word" title="Statement 1">
+                    <input type="text" class="answer-box word" title="Statement 2">
+                    <input type="text" class="answer-box word" title="Statement 3">
+                    <input type="text" class="answer-box word" title="Statement 4">
+                    <input type="text" class="answer-box word" title="Statement 5">
+                    <input type="text" class="answer-box word" title="Statement 6">
+                    <input type="text" class="answer-box word" title="Statement 7">
+                    <input type="text" class="answer-box word" title="Statement 8">
+                    <input type="text" class="answer-box word" title="Statement 9">
+                    <input type="text" class="answer-box word" title="Statement 10">
                 </td>
             </tr>
         </table>
@@ -254,9 +264,12 @@
         const boxes = document.querySelectorAll('.answer-box');
         const answers = [];
         boxes.forEach(box => {
+            const raw = (box.value || '').trim();
             answers.push({
                 question: box.title,
-                answer: (box.value || '').trim().toUpperCase()
+                // Grammar boxes are single letters (A/B/C/D) — normalize to uppercase.
+                // Reading Comprehension "word" boxes keep whatever case the student typed.
+                answer: box.classList.contains('word') ? raw : raw.toUpperCase()
             });
         });
         return answers;

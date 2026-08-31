@@ -75,6 +75,16 @@
             box-sizing: border-box;
             text-transform: uppercase;
         }
+        .answer-box.word {
+            width: 130px;
+            text-align: left;
+            padding-left: 10px;
+            text-transform: none;
+        }
+        td {
+            flex-wrap: wrap;
+            row-gap: 8px;
+        }
         .answer-box:focus {
             border-color: #3498db;
             outline: none;
@@ -214,46 +224,46 @@
             <tr>
                 <th>1 - 10</th>
                 <td>
-                    <input type="text" class="answer-box" maxlength="1" title="Question 1">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 2">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 3">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 4">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 5">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 6">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 7">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 8">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 9">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 10">
+                    <input type="text" class="answer-box word" title="Question 1">
+                    <input type="text" class="answer-box word" title="Question 2">
+                    <input type="text" class="answer-box word" title="Question 3">
+                    <input type="text" class="answer-box word" title="Question 4">
+                    <input type="text" class="answer-box word" title="Question 5">
+                    <input type="text" class="answer-box word" title="Question 6">
+                    <input type="text" class="answer-box word" title="Question 7">
+                    <input type="text" class="answer-box word" title="Question 8">
+                    <input type="text" class="answer-box word" title="Question 9">
+                    <input type="text" class="answer-box word" title="Question 10">
                 </td>
             </tr>
             <tr>
                 <th>11 - 20</th>
                 <td>
-                    <input type="text" class="answer-box" maxlength="1" title="Question 11">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 12">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 13">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 14">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 15">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 16">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 17">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 18">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 19">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 20">
+                    <input type="text" class="answer-box word" title="Question 11">
+                    <input type="text" class="answer-box word" title="Question 12">
+                    <input type="text" class="answer-box word" title="Question 13">
+                    <input type="text" class="answer-box word" title="Question 14">
+                    <input type="text" class="answer-box word" title="Question 15">
+                    <input type="text" class="answer-box word" title="Question 16">
+                    <input type="text" class="answer-box word" title="Question 17">
+                    <input type="text" class="answer-box word" title="Question 18">
+                    <input type="text" class="answer-box word" title="Question 19">
+                    <input type="text" class="answer-box word" title="Question 20">
                 </td>
             </tr>
             <tr>
                 <th>21 - 30</th>
                 <td>
-                    <input type="text" class="answer-box" maxlength="1" title="Question 21">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 22">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 23">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 24">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 25">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 26">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 27">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 28">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 29">
-                    <input type="text" class="answer-box" maxlength="1" title="Question 30">
+                    <input type="text" class="answer-box word" title="Question 21">
+                    <input type="text" class="answer-box word" title="Question 22">
+                    <input type="text" class="answer-box word" title="Question 23">
+                    <input type="text" class="answer-box word" title="Question 24">
+                    <input type="text" class="answer-box word" title="Question 25">
+                    <input type="text" class="answer-box word" title="Question 26">
+                    <input type="text" class="answer-box word" title="Question 27">
+                    <input type="text" class="answer-box word" title="Question 28">
+                    <input type="text" class="answer-box word" title="Question 29">
+                    <input type="text" class="answer-box word" title="Question 30">
                 </td>
             </tr>
         </table>
@@ -272,9 +282,12 @@
         const boxes = document.querySelectorAll('.answer-box');
         const answers = [];
         boxes.forEach(box => {
+            const raw = (box.value || '').trim();
             answers.push({
                 question: box.title,
-                answer: (box.value || '').trim().toUpperCase()
+                // Grammar boxes are single letters (A/B/C/D) — normalize to uppercase.
+                // Reading Comprehension "word" boxes keep whatever case the student typed.
+                answer: box.classList.contains('word') ? raw : raw.toUpperCase()
             });
         });
         return answers;
