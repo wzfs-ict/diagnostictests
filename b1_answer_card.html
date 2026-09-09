@@ -290,6 +290,69 @@
 </form>
 
 <script>
+    // Answer key stored as SHA-256 hashes of "Question Title::normalized answer" rather
+    // than plain text, so opening the page source doesn't just hand a student the answers.
+    const ANSWER_KEY_HASHES = {
+        "Question 1": "49e5a2a22c678585f1c857ac5f23ad111d1e694615274267d981bd70715679ab",
+        "Question 2": "09763634ceb7f92e6e1b6c1db8fd638463a939ecdd7de6930ef8b387aa7599ca",
+        "Question 3": "00c297f12eb55503948e107a78c865562d559601fce54510143364217d758140",
+        "Question 4": "b3baee441110eae41476c2283406abc7b60beb1ac598265ab572cf31702740f4",
+        "Question 5": "d60c46d62869fc7c5a5d7cc1885a7d941908dceff2510f9561ff00fcd4c5bb66",
+        "Question 6": "2ba1ecbec6b4f93503375da6f27fab6724570300cacfb0f0c8ce6a949eb83d73",
+        "Question 7": "a801b50f7c42e31551d6f7fc7567aad5d752796a0fd91d306ffeffb8a9f39ca7",
+        "Question 8": "443984359f58df0abae01f76e253921757c7d85fd1e79f8a7404ae29a33b8dbb",
+        "Question 9": "7d5d85f42ca05d9d23ec131c0796b934e3b8237604dccd94995cc160adf59c22",
+        "Question 10": "468c30c24acc3e8487c06457d0dbe9af3d76a67bf520ade8b908696817d4fc46",
+        "Question 11": "0a61edbdcbb4f0f23d3c178707d05b7eb0216c0c77345c19ff517d158d1dd957",
+        "Question 12": "9c0a9d50437007552eb36ca3b300ae2ad209790a1581474dc26c38085951f506",
+        "Question 13": "18b3c6b87e4383972217b5d6557160ccf11f63d007d17817e273eaec45d03c4b",
+        "Question 14": "9bc7ac8407a5e30fc882a06d4828d55a6816b190a065f6693a8b01c52547efa4",
+        "Question 15": "b4528e33fe5192845293ce42850378fa96f1e1f2e02c2d5024a729e462e7b686",
+        "Question 16": "c611aecbea480c12f9d309cbeec937657f4e9c5425aea0435f529c6d61f5f161",
+        "Question 17": "0688a0b376090fb9a6087b39a0d281f9acd2c249b91baae73fcaaf503cc65417",
+        "Question 18": "c8c87b767c634ec13a4e4445e59de0f23ee980f0b89052eb9d0821619049ab0e",
+        "Question 19": "6b7c1af69f9e4c380e5107b2216a6594404c4c436664828707a111685c672c09",
+        "Question 20": "481e6581f3e27b5a1cf9bf0ae11ee4ff853d1183d159c3b8d735d78e69308cb9",
+        "Notice 1": "63a5d25d4b017742cf997e0351c87024044f1295efd0d726e5a0f260bcd0ddaf",
+        "Notice 2": "ae294d0d72b1155a585f3bd7182ea32c27c8b42634dccaba813dae5137029592",
+        "Notice 3": "c3108a764c0521cbebb614b129f89c275706f17e7fbdaf64c0b22e661f2ba504",
+        "Notice 4": "e64fa2b240f7e6d52b87e1944b366fd7b0f1d909995f565cd50e5bca76ca778b",
+        "Notice 5": "d24b40deda0e30a441ce5151e3cf7685458b973f6d584fe8888f33064140b861",
+        "Shark 1": "5c6d799d756e70104c866ee69321de33eb4c4c31f3b7c5dfd68d62b316259d5d",
+        "Shark 2": "ccaaf7e0d0d3b0d3d3698184ad71662736837956e5f4ceea23e57002816e9a1e",
+        "Shark 3": "6784fb27f43aebea6450c0e3fe526d93c2b653a8b76928658816d4d63e76d0a4",
+        "Shark 4": "a41d32b71890d46e8bd95163f11c02370f1f10021a80c9ca8d7ab4e145413748",
+        "Shark 5": "1c99385c2cc39e4751e0f2e1d787f510c40cee6100ccdce5ae7f3d8baf2d60d5",
+        "Shark 6": "f1ca17d6c1db3dca94e6ab37938fb8ca49c67d24890db4f55edd4ef4ad56afef",
+        "Tower 1": "3dd6adf37a2c85f03937d16198162386b0b9444c9a5ae909c7a8374ad103410d",
+        "Tower 2": "351debc6ff2117e533fcf9e1bdfe7d9d210f116e5afaac79f9e7ad806f3dc577",
+        "Tower 3": "2e8d6666d634c199b8c08a6aa77dab58756466f0db623836f566e93f5b49db3c",
+        "Tower 4": "1770e6a133bdc7eb004116ffe84f9fcf1251af6210b5f892fc036b22875f14cd",
+        "Tower 5": "2a136f001f4c83461f46eb9d40d7795d42786ea26009e6e9e3eb57d0cbe99406",
+        "Tower 6": "c82af84138e2bcf19804fa017ea1835f4d4ae97fe3e591e69b4b759100242e08",
+        "Georgina 1": "9284e8b5bdd379cc7e31483b2660a2de4ef94ad9b90d3703ec8ed59145a6b876",
+        "Georgina 2": "51cbde502f3d9b71cf34aff7816b16d9daa2487f2060ad78efbb556c42aa98ed",
+        "Georgina 3": "0bc91811e9b974e87d20dc5cb0fd66c1d443d833a309588192212b1e28c1dfbe",
+        "Georgina 4": "cf9997122c3e384d84ae4c2974df2597cb55bfb740fc055d64d1713fca53ad85",
+        "Georgina 5": "6a8043cad2eed59d8c0b3fd83842df55190057e12e8bafc35fc647e772bae42d",
+        "Statement 1": "56c452b8fa24a8628d855031a04177b878c6755c79e1748daec8437eb2f3fa51",
+        "Statement 2": "e05980625e7fc539e0d50c49ad9c09180fe2411413d4a1d8499509692dd32ef7",
+        "Statement 3": "4d5648e0f332c92c01ad11603e1caf3756789e931b59a5beb4708180af67036a",
+        "Statement 4": "a4c311fd5a2802bcbd989d0ea0b73a8a0da5bc92c35cdae8919190c6754af940",
+        "Statement 5": "49fe1163f3a175e939524cf9434d0755f1444026ec098f60bf3ac36d9ee05f8e",
+        "Statement 6": "a5a568c529d09355ad6704d930284523b9b6f276ee9e42d37cc7f672abdd051d",
+        "Statement 7": "895515313b94e4dc3db7eaa67980010cd7d53ae1f1dea6a1fcacf1e2cf59871c",
+        "Statement 8": "11fd6741388fb5ecd6dba978230d636b41e7b697d8c0b5dd3fb2b741050ce1e4",
+        "Statement 9": "d2f38084b537e16767142a4b619244e64bedaa8c04aae55adabb02acf99d6d6a",
+        "Statement 10": "e3a9dfc517fccdac50fcd58d2cc052d5df09b5769b9d43157ac266357bb14337"
+    };
+
+    async function sha256Hex(text) {
+        const data = new TextEncoder().encode(text);
+        const digest = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
     function collectAnswers() {
         const boxes = document.querySelectorAll('.answer-box');
         const answers = [];
@@ -302,6 +365,31 @@
         return answers;
     }
 
+    // Hashes each typed answer and compares it to the answer key, marking each box
+    // correct/incorrect. Returns null if grading isn't possible (e.g. Web Crypto
+    // unavailable), so callers can fall back to leaving the score blank.
+    async function gradeAnswers() {
+        const boxes = document.querySelectorAll('.answer-box');
+        let correct = 0;
+        let total = 0;
+        try {
+            for (const box of boxes) {
+                const key = ANSWER_KEY_HASHES[box.title];
+                if (!key) continue;
+                total++;
+                box.classList.remove('correct', 'incorrect');
+                const normalized = `${box.title}::${(box.value || '').trim().toLowerCase()}`;
+                const isCorrect = (await sha256Hex(normalized)) === key;
+                box.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) correct++;
+            }
+        } catch (e) {
+            console.error('Could not auto-mark the test:', e);
+            return null;
+        }
+        return { correct, total };
+    }
+
     async function submitForm() {
         const studentName = document.getElementById('studentName').value.trim() || 'Student';
         const studentGrade = document.getElementById('studentGrade').value.trim() || '';
@@ -310,8 +398,14 @@
         const pdfFilename = `B1_Diagnostic_Test_${studentName}.pdf`;
 
         submitBtn.disabled = true;
-        statusMsg.textContent = 'Preparing PDF...';
+        statusMsg.textContent = 'Marking...';
         statusMsg.className = 'status-msg';
+
+        const result = await gradeAnswers();
+        const scoreText = result ? `${result.correct} / ${result.total}` : '';
+        document.getElementById('studentScore').value = scoreText;
+
+        statusMsg.textContent = 'Preparing PDF...';
 
         // Bake current input values into the DOM so html2canvas renders what the student typed.
         document.querySelectorAll('.container input').forEach(inp => inp.setAttribute('value', inp.value));
@@ -331,9 +425,10 @@
             console.error('Could not generate PDF for email attachment:', e);
         }
 
-        document.getElementById('emailSubject').value = `B1 Diagnostic Test submission - ${studentName}`;
+        document.getElementById('emailSubject').value = `B1 Diagnostic Test submission - ${studentName}${scoreText ? ` (${scoreText})` : ''}`;
         document.getElementById('emailStudentName').value = studentName;
         document.getElementById('emailGrade').value = studentGrade;
+        document.getElementById('emailScore').value = scoreText;
         document.getElementById('emailSubmittedAt').value = new Date().toLocaleString();
         document.getElementById('emailAnswers').value = collectAnswers()
             .map(a => `${a.question}: ${a.answer || '(blank)'}`)
