@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 19 Reading Test - Answer Card</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .info-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .info-group label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .info-group input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 150px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        table, tr {
+            page-break-inside: avoid;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            width: 150px;
+            white-space: nowrap;
+        }
+        td {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            row-gap: 8px;
+            justify-content: flex-start;
+        }
+        .answer-box {
+            width: 40px;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-transform: uppercase;
+        }
+        .answer-box.word {
+            width: 130px;
+            text-align: left;
+            padding-left: 10px;
+            text-transform: none;
+        }
+        .answer-box:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        .qa-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            page-break-inside: avoid;
+        }
+        .qa-row .qa-label {
+            min-width: 90px;
+            font-weight: bold;
+            padding-top: 8px;
+        }
+        .qa-row input.longtext {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .qa-row input.longtext:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        .exercise-intro {
+            color: #555;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        .submit-btn:hover {
+            background-color: #2ecc71;
+        }
+        .submit-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .status-msg {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+            min-height: 20px;
+        }
+        .status-msg.success { color: #27ae60; }
+        .status-msg.error { color: #c0392b; }
+        @media print {
+            .status-msg { display: none; }
+            body {
+                background-color: #fff;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+            .submit-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Unit 19 Answer Card</h1>
+    <h2 style="font-size: 1.2em; color: #7f8c8d; margin-top: -10px;">Reading Test</h2>
+
+    <div class="student-info">
+        <div class="info-group">
+            <label for="studentName">Name:</label>
+            <input type="text" id="studentName" placeholder="Full Name">
+        </div>
+        <div class="info-group">
+            <label for="studentGrade">Grade:</label>
+            <input type="text" id="studentGrade" placeholder="Grade Level">
+        </div>
+        <div class="info-group">
+            <label for="studentScore">Score:</label>
+            <input type="text" id="studentScore" placeholder="Teacher Use" disabled style="background-color: #eee;">
+        </div>
+    </div>
+
+    <div>
+        <h3>Exercise 1 (Q1-7)</h3>
+        <p class="exercise-intro">The Retro Revival - write a short answer for each question.</p>
+        <div class="qa-row"><span class="qa-label">Q1</span><input type="text" class="longtext" title="Ex1 Q1"></div>
+        <div class="qa-row"><span class="qa-label">Q2</span><input type="text" class="longtext" title="Ex1 Q2"></div>
+        <div class="qa-row"><span class="qa-label">Q3</span><input type="text" class="longtext" title="Ex1 Q3"></div>
+        <div class="qa-row"><span class="qa-label">Q4</span><input type="text" class="longtext" title="Ex1 Q4"></div>
+        <div class="qa-row"><span class="qa-label">Q5</span><input type="text" class="longtext" title="Ex1 Q5"></div>
+        <div class="qa-row"><span class="qa-label">Q6</span><input type="text" class="longtext" title="Ex1 Q6"></div>
+        <div class="qa-row"><span class="qa-label">Q7</span><input type="text" class="longtext" title="Ex1 Q7"></div>
+
+        <h3>Exercise 2 (Q1-9)</h3>
+        <p class="exercise-intro">Young pilots - write the correct letter (A, B, C or D) for each statement.</p>
+        <table>
+            <tr>
+                <th>1 - 9</th>
+                <td>
+                    <input type="text" class="answer-box word" title="Ex2 Statement 1">
+                    <input type="text" class="answer-box word" title="Ex2 Statement 2">
+                    <input type="text" class="answer-box word" title="Ex2 Statement 3">
+                    <input type="text" class="answer-box word" title="Ex2 Statement 4">
+                    <input type="text" class="answer-box word" title="Ex2 Statement 5">
+                    <input type="text" class="answer-box word" title="Ex2 Statement 6">
+                    <input type="text" class="answer-box word" title="Ex2 Statement 7">
+                    <input type="text" class="answer-box word" title="Ex2 Statement 8">
+                    <input type="text" class="answer-box word" title="Ex2 Statement 9">
+                </td>
+            </tr>
+        </table>
+
+        <h3>Exercise 3 (Q1-8)</h3>
+        <p class="exercise-intro">The Allure of the Past - complete the notes, then give a synonym for each word.</p>
+        <p style="font-weight:bold; margin-bottom:4px;">Reasons for the retro trend:</p>
+        <div class="qa-row"><span class="qa-label">1</span><input type="text" class="longtext" title="Ex3 Reason 1"></div>
+        <div class="qa-row"><span class="qa-label">2</span><input type="text" class="longtext" title="Ex3 Reason 2"></div>
+        <div class="qa-row"><span class="qa-label">3</span><input type="text" class="longtext" title="Ex3 Reason 3"></div>
+        <p style="font-weight:bold; margin-bottom:4px;">Potential problems with the retro trend:</p>
+        <div class="qa-row"><span class="qa-label">4</span><input type="text" class="longtext" title="Ex3 Problem 1"></div>
+        <div class="qa-row"><span class="qa-label">5</span><input type="text" class="longtext" title="Ex3 Problem 2"></div>
+        <p style="font-weight:bold; margin-bottom:4px;">Synonyms:</p>
+        <div class="qa-row"><span class="qa-label">Relentless</span><input type="text" class="longtext" title="Ex3 Synonym (Relentless)"></div>
+        <div class="qa-row"><span class="qa-label">Authenticity</span><input type="text" class="longtext" title="Ex3 Synonym (Authenticity)"></div>
+        <div class="qa-row"><span class="qa-label">Counterparts</span><input type="text" class="longtext" title="Ex3 Synonym (Counterparts)"></div>
+
+        <h3 style="margin-top:30px;">Exercise 4 (Q1-6)</h3>
+        <p class="exercise-intro">Max's blog - write the correct letter (A, B, C or D) for each question.</p>
+        <table>
+            <tr>
+                <th>1 - 6</th>
+                <td>
+                    <input type="text" class="answer-box word" title="Ex4 Q1">
+                    <input type="text" class="answer-box word" title="Ex4 Q2">
+                    <input type="text" class="answer-box word" title="Ex4 Q3">
+                    <input type="text" class="answer-box word" title="Ex4 Q4">
+                    <input type="text" class="answer-box word" title="Ex4 Q5">
+                    <input type="text" class="answer-box word" title="Ex4 Q6">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitForm()">Submit & Save as PDF</button>
+    <div class="status-msg" id="statusMsg"></div>
+</div>
+
+<!-- Hidden iframe + real (non-AJAX) form: formsubmit.co only accepts file
+     attachments on a standard multipart POST, not its AJAX endpoint. Targeting
+     a hidden iframe lets that POST happen without navigating the page away. -->
+<iframe name="emailFrame" id="emailFrame" style="display:none"></iframe>
+<form id="emailForm" action="https://formsubmit.co/mparker@zhongshischool.org" method="POST"
+      enctype="multipart/form-data" target="emailFrame" style="display:none">
+    <input type="hidden" name="_cc" value="kjoshua@zhongshischool.org">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_subject" id="emailSubject">
+    <input type="hidden" name="Test" value="Unit 19 Reading Test">
+    <input type="hidden" name="Student Name" id="emailStudentName">
+    <input type="hidden" name="Grade" id="emailGrade">
+    <input type="hidden" name="Submitted At" id="emailSubmittedAt">
+    <input type="hidden" name="Answers" id="emailAnswers">
+    <input type="file" name="attachment" id="emailAttachment">
+</form>
+
+<script>
+    // No answer key has been supplied for this test yet, so unlike the B1/A2 diagnostic
+    // cards this page does not auto-mark - the Score field stays for teacher use.
+
+    function collectAnswers() {
+        const boxes = document.querySelectorAll('.answer-box, input.longtext');
+        const answers = [];
+        boxes.forEach(box => {
+            answers.push({
+                question: box.title,
+                answer: (box.value || '').trim()
+            });
+        });
+        return answers;
+    }
+
+    async function submitForm() {
+        const studentName = document.getElementById('studentName').value.trim() || 'Student';
+        const studentGrade = document.getElementById('studentGrade').value.trim() || '';
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const pdfFilename = `Unit19_Reading_Test_${studentName}.pdf`;
+
+        submitBtn.disabled = true;
+        statusMsg.textContent = 'Preparing PDF...';
+        statusMsg.className = 'status-msg';
+
+        // Bake current input values into the DOM so html2canvas renders what the student typed.
+        document.querySelectorAll('.container input').forEach(inp => inp.setAttribute('value', inp.value));
+
+        let pdfFile = null;
+        try {
+            const pdfBlob = await html2pdf().set({
+                margin: 10,
+                filename: pdfFilename,
+                image: { type: 'jpeg', quality: 0.85 },
+                html2canvas: { scale: 1.5 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['avoid-all', 'css'] }
+            }).from(document.querySelector('.container')).outputPdf('blob');
+            pdfFile = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
+        } catch (e) {
+            console.error('Could not generate PDF for email attachment:', e);
+        }
+
+        document.getElementById('emailSubject').value = `Unit 19 Reading Test submission - ${studentName}`;
+        document.getElementById('emailStudentName').value = studentName;
+        document.getElementById('emailGrade').value = studentGrade;
+        document.getElementById('emailSubmittedAt').value = new Date().toLocaleString();
+        document.getElementById('emailAnswers').value = collectAnswers()
+            .map(a => `${a.question}: ${a.answer || '(blank)'}`)
+            .join('\n');
+
+        const attachmentInput = document.getElementById('emailAttachment');
+        if (pdfFile) {
+            const dt = new DataTransfer();
+            dt.items.add(pdfFile);
+            attachmentInput.files = dt.files;
+        }
+
+        statusMsg.textContent = 'Sending to teacher...';
+        const emailFrame = document.getElementById('emailFrame');
+        emailFrame.addEventListener('load', () => {
+            statusMsg.textContent = 'Sent to teacher ✓';
+            statusMsg.className = 'status-msg success';
+            submitBtn.disabled = false;
+        }, { once: true });
+        try {
+            document.getElementById('emailForm').submit();
+        } catch (e) {
+            console.error('Could not send results automatically:', e);
+            statusMsg.textContent = 'Could not send automatically — please also save/print this page and hand it in.';
+            statusMsg.className = 'status-msg error';
+            submitBtn.disabled = false;
+        }
+
+        // Change document title for cleaner PDF saving
+        document.title = `Unit19_Reading_Test_${studentName}`;
+        window.print();
+        // Reset title after a brief delay
+        setTimeout(() => { document.title = 'Unit 19 Reading Test - Answer Card'; }, 1000);
+    }
+</script>
+
+</body>
+</html>
