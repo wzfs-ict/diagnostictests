@@ -25,6 +25,15 @@
       color: #2c3e50;
       text-align: center;
     }
+    .section-title {
+      margin-top: 34px;
+      border-bottom: 2px solid #2c3e50;
+      padding-bottom: 8px;
+    }
+    h4 {
+      color: #5d6d7e;
+      margin: 22px 0 10px;
+    }
     .student-info {
       display: flex;
       justify-content: space-between;
@@ -69,6 +78,16 @@
       justify-content: flex-start;
       row-gap: 8px;
     }
+    .written-table td {
+      display: table-cell;
+    }
+    .written-table th {
+      width: 35px;
+      text-align: center;
+    }
+    .compact-table th {
+      width: 70px;
+    }
     .answer-box {
       width: 42px;
       padding: 8px;
@@ -83,6 +102,30 @@
       text-align: left;
       padding-left: 10px;
       text-transform: none;
+    }
+    .prompt {
+      font-weight: bold;
+      margin: 8px 0 18px;
+    }
+    .response-label {
+      display: block;
+      font-weight: bold;
+      margin: 18px 0 6px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 72px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font: inherit;
+      resize: vertical;
+    }
+    textarea:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
     }
     .answer-box:focus {
       border-color: #3498db;
@@ -121,6 +164,7 @@
       body { background-color: #fff; }
       .container { box-shadow: none; padding: 0; }
       .submit-btn, .status-msg { display: none; }
+      textarea { resize: none; }
     }
   </style>
 </head>
@@ -144,60 +188,47 @@
       </div>
     </div>
 
-    <div>
-      <h3>Part A - Multiple Choice</h3>
-      <table>
-        <tr>
-          <th>1 - 10</th>
-          <td>
-            <input type="text" class="answer-box" title="Question 1">
-            <input type="text" class="answer-box" title="Question 2">
-            <input type="text" class="answer-box" title="Question 3">
-            <input type="text" class="answer-box" title="Question 4">
-            <input type="text" class="answer-box" title="Question 5">
-            <input type="text" class="answer-box" title="Question 6">
-            <input type="text" class="answer-box" title="Question 7">
-            <input type="text" class="answer-box" title="Question 8">
-            <input type="text" class="answer-box" title="Question 9">
-            <input type="text" class="answer-box" title="Question 10">
-          </td>
-        </tr>
-        <tr>
-          <th>11 - 20</th>
-          <td>
-            <input type="text" class="answer-box" title="Question 11">
-            <input type="text" class="answer-box" title="Question 12">
-            <input type="text" class="answer-box" title="Question 13">
-            <input type="text" class="answer-box" title="Question 14">
-            <input type="text" class="answer-box" title="Question 15">
-            <input type="text" class="answer-box" title="Question 16">
-            <input type="text" class="answer-box" title="Question 17">
-            <input type="text" class="answer-box" title="Question 18">
-            <input type="text" class="answer-box" title="Question 19">
-            <input type="text" class="answer-box" title="Question 20">
-          </td>
-        </tr>
+    <section class="section">
+      <h2 class="section-title">Unit 1 - Psychology</h2>
+
+      <h3>Vocabulary</h3>
+      <h4>Choose the correct answer.</h4>
+      <table class="answer-table compact-table">
+        <tr><th>1 - 5</th><td><input class="answer-box" title="Vocabulary question 1"><input class="answer-box" title="Vocabulary question 2"><input class="answer-box" title="Vocabulary question 3"><input class="answer-box" title="Vocabulary question 4"><input class="answer-box" title="Vocabulary question 5"></td></tr>
+        <tr><th>6 - 10</th><td><input class="answer-box" title="Vocabulary question 6"><input class="answer-box" title="Vocabulary question 7"><input class="answer-box" title="Vocabulary question 8"><input class="answer-box" title="Vocabulary question 9"><input class="answer-box" title="Vocabulary question 10"></td></tr>
+        <tr><th>11 - 15</th><td><input class="answer-box" title="Vocabulary question 11"><input class="answer-box" title="Vocabulary question 12"><input class="answer-box" title="Vocabulary question 13"><input class="answer-box" title="Vocabulary question 14"><input class="answer-box" title="Vocabulary question 15"></td></tr>
       </table>
 
-      <h3>Part B - Short Answers</h3>
-      <table>
-        <tr>
-          <th>21 - 30</th>
-          <td>
-            <input type="text" class="answer-box long" title="Question 21">
-            <input type="text" class="answer-box long" title="Question 22">
-            <input type="text" class="answer-box long" title="Question 23">
-            <input type="text" class="answer-box long" title="Question 24">
-            <input type="text" class="answer-box long" title="Question 25">
-            <input type="text" class="answer-box long" title="Question 26">
-            <input type="text" class="answer-box long" title="Question 27">
-            <input type="text" class="answer-box long" title="Question 28">
-            <input type="text" class="answer-box long" title="Question 29">
-            <input type="text" class="answer-box long" title="Question 30">
-          </td>
-        </tr>
+      <h4>Complete each sentence with the correct word from the box.</h4>
+      <table class="answer-table written-table">
+        <tr><th>1</th><td><input class="answer-box long" title="Vocabulary completion 1"></td><th>6</th><td><input class="answer-box long" title="Vocabulary completion 6"></td></tr>
+        <tr><th>2</th><td><input class="answer-box long" title="Vocabulary completion 2"></td><th>7</th><td><input class="answer-box long" title="Vocabulary completion 7"></td></tr>
+        <tr><th>3</th><td><input class="answer-box long" title="Vocabulary completion 3"></td><th>8</th><td><input class="answer-box long" title="Vocabulary completion 8"></td></tr>
+        <tr><th>4</th><td><input class="answer-box long" title="Vocabulary completion 4"></td><th>9</th><td><input class="answer-box long" title="Vocabulary completion 9"></td></tr>
+        <tr><th>5</th><td><input class="answer-box long" title="Vocabulary completion 5"></td><th>10</th><td><input class="answer-box long" title="Vocabulary completion 10"></td></tr>
       </table>
-    </div>
+
+      <h3>Grammar</h3>
+      <h4>Choose the correct answer.</h4>
+      <table class="answer-table compact-table">
+        <tr><th>1 - 5</th><td><input class="answer-box" title="Grammar question 1"><input class="answer-box" title="Grammar question 2"><input class="answer-box" title="Grammar question 3"><input class="answer-box" title="Grammar question 4"><input class="answer-box" title="Grammar question 5"></td></tr>
+        <tr><th>6 - 10</th><td><input class="answer-box" title="Grammar question 6"><input class="answer-box" title="Grammar question 7"><input class="answer-box" title="Grammar question 8"><input class="answer-box" title="Grammar question 9"><input class="answer-box" title="Grammar question 10"></td></tr>
+        <tr><th>11 - 15</th><td><input class="answer-box" title="Grammar question 11"><input class="answer-box" title="Grammar question 12"><input class="answer-box" title="Grammar question 13"><input class="answer-box" title="Grammar question 14"><input class="answer-box" title="Grammar question 15"></td></tr>
+        <tr><th>16 - 20</th><td><input class="answer-box" title="Grammar question 16"><input class="answer-box" title="Grammar question 17"><input class="answer-box" title="Grammar question 18"><input class="answer-box" title="Grammar question 19"><input class="answer-box" title="Grammar question 20"></td></tr>
+        <tr><th>21 - 25</th><td><input class="answer-box" title="Grammar question 21"><input class="answer-box" title="Grammar question 22"><input class="answer-box" title="Grammar question 23"><input class="answer-box" title="Grammar question 24"><input class="answer-box" title="Grammar question 25"></td></tr>
+      </table>
+
+      <h3>Reading Comprehension</h3>
+      <p class="prompt">The Influence of Fashion on Teenage Identity</p>
+      <label class="response-label" for="reading1">Question 1 - Answer in a complete sentence.</label>
+      <textarea id="reading1" title="Reading question 1"></textarea>
+      <label class="response-label" for="reading2">Question 2</label>
+      <textarea id="reading2" title="Reading question 2"></textarea>
+      <label class="response-label" for="reading3">Question 3 - Give one reason from the text.</label>
+      <textarea id="reading3" title="Reading question 3"></textarea>
+      <label class="response-label" for="reading4">Question 4 - Give one helpful and one harmful example in complete sentences.</label>
+      <textarea id="reading4" title="Reading question 4"></textarea>
+    </section>
 
     <button class="submit-btn" id="submitBtn" onclick="saveAsPdf()">Submit & Save as PDF</button>
     <div class="status-msg" id="statusMsg"></div>
