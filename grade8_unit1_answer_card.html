@@ -60,6 +60,8 @@
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 30px;
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
     th, td {
       border: 1px solid #ddd;
@@ -230,37 +232,87 @@
       <textarea id="reading4" title="Reading question 4"></textarea>
     </section>
 
-    <button class="submit-btn" id="submitBtn" onclick="saveAsPdf()">Submit & Save as PDF</button>
+    <button class="submit-btn" id="submitBtn" onclick="submitForm()">Submit &amp; Email PDF</button>
     <div class="status-msg" id="statusMsg"></div>
   </div>
 
+  <iframe name="emailFrame" id="emailFrame" style="display:none"></iframe>
+  <form id="emailForm" action="https://formsubmit.co/mparker@zhongshischool.org" method="POST" enctype="multipart/form-data" target="emailFrame" style="display:none">
+    <input type="hidden" name="_cc" value="kjoshua@zhongshischool.org">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_subject" id="emailSubject">
+    <input type="hidden" name="Test" value="Grade 8 Unit 1 Psychology Test">
+    <input type="hidden" name="Student Name" id="emailStudentName">
+    <input type="hidden" name="Grade" id="emailGrade">
+    <input type="hidden" name="Submitted At" id="emailSubmittedAt">
+    <input type="hidden" name="Answers" id="emailAnswers">
+    <input type="file" name="attachment" id="emailAttachment">
+  </form>
+
   <script>
-    async function saveAsPdf() {
+    function collectAnswers() {
+      const answers = [];
+      document.querySelectorAll('.answer-box, textarea').forEach(field => {
+        answers.push(`${field.title}: ${field.value.trim() || '(blank)'}`);
+      });
+      return answers.join('\n');
+    }
+
+    async function submitForm() {
       const studentName = document.getElementById('studentName').value.trim() || 'Student';
+      const studentGrade = document.getElementById('studentGrade').value.trim() || '';
       const submitBtn = document.getElementById('submitBtn');
       const statusMsg = document.getElementById('statusMsg');
+      const pdfFilename = `Grade8_Unit1_${studentName}.pdf`;
 
       submitBtn.disabled = true;
-      statusMsg.textContent = 'Preparing PDF...';
+      statusMsg.textContent = 'Preparing PDF for email...';
       statusMsg.className = 'status-msg';
 
-      try {
-        await html2pdf().set({
-          margin: 10,
-          filename: `Grade8_Unit1_${studentName}.pdf`,
-          image: { type: 'jpeg', quality: 0.85 },
-          html2canvas: { scale: 1.5 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { mode: ['avoid-all', 'css'] }
-        }).from(document.querySelector('.container')).save();
+      document.querySelectorAll('.container input').forEach(input => input.setAttribute('value', input.value));
 
-        statusMsg.textContent = 'PDF ready ✓';
-        statusMsg.className = 'status-msg success';
+      let pdfFile = null;
+      try {
+        const pdfBlob = await html2pdf().set({
+          margin: 10,
+          filename: pdfFilename,
+          image: { type: 'jpeg', quality: 0.85 },
+          html2canvas: { scale: 1.5, useCORS: true, scrollX: 0, scrollY: 0 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          pagebreak: { mode: ['css', 'legacy'] }
+        }).from(document.querySelector('.container')).outputPdf('blob');
+        pdfFile = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
       } catch (error) {
         console.error(error);
-        statusMsg.textContent = 'Could not generate PDF. Please print the page directly.';
+        statusMsg.textContent = 'Could not generate PDF or send email.';
         statusMsg.className = 'status-msg error';
-      } finally {
+        submitBtn.disabled = false;
+        return;
+      }
+
+      document.getElementById('emailSubject').value = `Grade 8 Unit 1 submission - ${studentName}`;
+      document.getElementById('emailStudentName').value = studentName;
+      document.getElementById('emailGrade').value = studentGrade;
+      document.getElementById('emailSubmittedAt').value = new Date().toLocaleString();
+      document.getElementById('emailAnswers').value = collectAnswers();
+
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(pdfFile);
+      document.getElementById('emailAttachment').files = dataTransfer.files;
+
+      statusMsg.textContent = 'Sending to teacher...';
+      const emailFrame = document.getElementById('emailFrame');
+      emailFrame.addEventListener('load', () => {
+        statusMsg.textContent = 'Sent to teacher ✓';
+        statusMsg.className = 'status-msg success';
+        submitBtn.disabled = false;
+      }, { once: true });
+      try {
+        document.getElementById('emailForm').submit();
+      } catch (error) {
+        console.error(error);
+        statusMsg.textContent = 'Could not send automatically. Please email the PDF manually.';
+        statusMsg.className = 'status-msg error';
         submitBtn.disabled = false;
       }
     }
